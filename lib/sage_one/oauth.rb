@@ -22,11 +22,9 @@ module SageOne
         client_secret:  client_secret,
         grant_type:     'authorization_code',
         code:           code,
-        redirect_uri:   redirect_uri,
+        redirect_uri:   redirect_uri
       }
       post("/oauth/token/", params, raw=false)
     end
-
   end
-
 end
