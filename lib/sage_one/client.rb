@@ -18,9 +18,7 @@ module SageOne
 
     include SageOne::Connection
     include SageOne::Request
-
     include SageOne::OAuth
-
     include SageOne::Client::SalesInvoices
   end
 end
