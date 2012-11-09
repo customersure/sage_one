@@ -1,5 +1,5 @@
 require 'faraday_middleware'
-require 'faraday/response/oauth2'
+require 'faraday/request/oauth2'
 require 'faraday/response/raise_sage_one_exception'
 
 module SageOne
