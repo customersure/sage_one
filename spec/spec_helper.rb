@@ -14,6 +14,26 @@ RSpec.configure do |config|
   config.treat_symbols_as_metadata_keys_with_true_values = true
 end
 
+def a_delete(url)
+  a_request(:delete, sage_url(url))
+end
+
+def a_get(url)
+  a_request(:get, sage_url(url))
+end
+
+def a_patch(url)
+  a_request(:patch, sage_url(url))
+end
+
+def a_post(url)
+  a_request(:post, sage_url(url))
+end
+
+def a_put(url)
+  a_request(:put, sage_url(url))
+end
+
 def stub_delete(url)
   stub_request(:delete, sage_url(url))
 end
@@ -31,7 +51,11 @@ def stub_put(url)
 end
 
 def sage_url(url)
-  "https://app.sageone.com/api/v1#{url}"
+  if url =~ /^http/
+    url
+  else
+    "https://app.sageone.com/api/v1/#{url}"
+  end
 end
 
 def fixture_path
