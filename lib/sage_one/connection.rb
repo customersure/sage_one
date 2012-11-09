@@ -14,7 +14,7 @@ module SageOne
                     'Content-Type' => 'application/json' },
         proxy:    proxy,
         ssl:      { verify: false },
-        url:      api_endpoint,
+        url:      api_endpoint
       }
 
       Faraday.new(options) do |conn|
