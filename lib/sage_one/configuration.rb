@@ -23,8 +23,12 @@ module SageOne
 
     attr_accessor(*VALID_OPTIONS_KEYS)
 
-    def self.extended(base)
-      base.reset
+    def api_endpoint=(value)
+      @api_endpoint = File.join(value, "")
+    end
+
+    def faraday_config(&block)
+      @faraday_config_block = block
     end
 
     def configure
@@ -35,19 +39,15 @@ module SageOne
       VALID_OPTIONS_KEYS.inject({}){|o,k| o.merge!(k => send(k)) }
     end
 
-    def api_endpoint=(value)
-      @api_endpoint = File.join(value, "")
-    end
-
-    def faraday_config(&block)
-      @faraday_config_block = block
+    def self.extended(base)
+      base.reset
     end
 
     def reset
       self.adapter        = DEFAULT_ADAPTER
       self.api_endpoint   = DEFAULT_API_ENDPOINT
       self.proxy          = nil
-      self.access_token    = nil
+      self.access_token   = nil
       self.client_id      = nil
       self.client_secret  = nil
       self.request_host   = nil
