@@ -15,6 +15,8 @@ module FaradayMiddleware
           raise SageOne::Forbidden, error_message(response)
         when 404
           raise SageOne::NotFound, error_message(response)
+        when 409
+          raise SageOne::Conflict, error_message(response)
         when 422
           raise SageOne::UnprocessableEntity, error_message(response)
         end

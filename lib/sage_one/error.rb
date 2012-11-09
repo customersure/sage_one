@@ -18,6 +18,9 @@ module SageOne
   # Raised when SageOne returns a 406 HTTP status code
   class NotAcceptable < Error; end
 
+  # Raised when SageOne returns a 409 HTTP status code
+  class Conflict < Error; end
+
   # Raised when SageOne returns a 422 HTTP status code
   class UnprocessableEntity < Error; end
 
