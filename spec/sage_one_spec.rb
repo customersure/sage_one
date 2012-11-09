@@ -2,10 +2,6 @@ require 'spec_helper'
 
 describe SageOne do
 
-  it 'has a version' do
-    SageOne::VERSION.should_not be_nil
-  end
-
   describe '.new' do
     it { SageOne.new.should be_a(SageOne::Client) }
   end
