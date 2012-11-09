@@ -35,7 +35,7 @@ describe SageOne::OAuth do
         it { expect { client.get_access_token('', 'http://www.example.com/endpoint') } .to raise_error(SageOne::BadRequest, "POST https://app.sageone.com/oauth/token/: 400 invalid_grant") }
       end
 
-      context 'wrong callback', :focus do
+      context 'wrong callback' do
         before { stub_request(:post, "https://app.sageone.com/oauth/token/").to_return(status: 401, body: '') }
         it { expect { client.get_access_token('uuddlrlr', 'http://www.example.com/notendpoint') }.to raise_error(SageOne::Unauthorized, "POST https://app.sageone.com/oauth/token/: 401 ") }
       end
