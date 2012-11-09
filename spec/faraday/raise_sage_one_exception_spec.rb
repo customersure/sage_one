@@ -13,7 +13,7 @@ describe Faraday::Response do
   }.each do |status, exception|
     context "when HTTP status is #{status}" do
 
-      before { stub_get('/sales_invoices').to_return(:status => status) }
+      before { stub_get('sales_invoices').to_return(:status => status) }
 
       it "raises #{exception.name} error" do
         expect { client.sales_invoices }.to raise_error(exception)
@@ -26,7 +26,7 @@ describe Faraday::Response do
   ].each do |body|
     context "when the response body contains an error message" do
 
-      before { stub_get('/sales_invoices').to_return(:status => 400, body: body) }
+      before { stub_get('sales_invoices').to_return(:status => 400, body: body) }
 
       it "raises an error with the error message" do
         expect { client.sales_invoices }.to raise_error(SageOne::BadRequest, /#{body.values.first}/)
