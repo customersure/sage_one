@@ -3,7 +3,7 @@ $:.unshift File.dirname(__FILE__)
 require 'sage_one/configuration'
 require 'sage_one/client'
 require 'sage_one/error'
-require 'sage_one/oauth'
+
 
 module SageOne
   extend Configuration
