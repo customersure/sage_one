@@ -9,7 +9,7 @@ describe SageOne::Request do
 
     [:get, :delete, :post, :put].each do |meth|
       it "#{meth} exists and delegates to request" do
-        client.should_receive(:request).with(meth, 'foo', {}, false)
+        client.should_receive(:request).with(meth, 'foo', {})
         client.send(meth, 'foo')
       end
     end
@@ -60,7 +60,8 @@ describe SageOne::Request do
       context 'raw requested' do
         it "returns a faraday response" do
           stub_get('sales_invoices')
-          expect(client.get('sales_invoices', {}, :raw)).to be_a(Faraday::Response)
+          client.raw_response = true
+          expect(client.get('sales_invoices', {})).to be_a(Faraday::Response)
         end
       end
       context 'not raw' do

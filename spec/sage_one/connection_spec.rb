@@ -27,7 +27,8 @@ describe SageOne::Connection  do
 
   context 'raw connection requested' do
     it 'does not include mashify or parse_json' do
-      stack = client.send(:connection, true).builder.handlers.map(&:name)
+      client.raw_response = true
+      stack = client.send(:connection).builder.handlers.map(&:name)
       (non_raw_middleware).each { |mw| expect(stack).to_not include(mw) }
     end
   end

@@ -29,7 +29,8 @@ describe SageOne::Client do
         client_secret: 'secret',
         user_agent: 'Gem Awesome',
         request_host: 'example.com',
-        auto_traversal: true
+        auto_traversal: true,
+        raw_response: true
       }
       client = SageOne::Client.new(better_options)
       SageOne::Configuration::VALID_OPTIONS_KEYS.each do |method|

@@ -13,13 +13,15 @@ module SageOne
       :client_secret,
       :user_agent,
       :request_host,
-      :auto_traversal].freeze
+      :auto_traversal,
+      :raw_response].freeze
 
     DEFAULT_ADAPTER        = Faraday.default_adapter
     DEFAULT_API_VERSION    = 1
     DEFAULT_API_ENDPOINT   = 'https://app.sageone.com/api/v1/'.freeze
     DEFAULT_USER_AGENT     = "SageOne Ruby Gem #{SageOne::VERSION}".freeze
     DEFAULT_AUTO_TRAVERSAL = false
+    DEFAULT_RAW_RESPONSE   = false
 
     attr_accessor(*VALID_OPTIONS_KEYS)
 
@@ -53,6 +55,7 @@ module SageOne
       self.request_host   = nil
       self.user_agent     = DEFAULT_USER_AGENT
       self.auto_traversal = DEFAULT_AUTO_TRAVERSAL
+      self.raw_response   = DEFAULT_RAW_RESPONSE
     end
   end
 end

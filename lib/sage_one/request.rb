@@ -2,27 +2,27 @@ require 'multi_json'
 
 module SageOne
   module Request
-    def delete(path, options={}, raw=false)
-      request(:delete, path, options, raw)
+    def delete(path, options={})
+      request(:delete, path, options)
     end
 
-    def get(path, options={}, raw=false)
-      request(:get, path, options, raw)
+    def get(path, options={})
+      request(:get, path, options)
     end
 
-    def post(path, options={}, raw=false)
-      request(:post, path, options, raw)
+    def post(path, options={})
+      request(:post, path, options)
     end
 
-    def put(path, options={}, raw=false)
-      request(:put, path, options, raw)
+    def put(path, options={})
+      request(:put, path, options)
     end
 
     private
 
-    def request(method, path, options, raw)
+    def request(method, path, options)
 
-      response = connection(raw).send(method) do |request|
+      response = connection.send(method) do |request|
         case method
         when :delete, :get
           options.merge!('$startIndex' => options.delete(:start_index)) if options[:start_index]
@@ -34,10 +34,10 @@ module SageOne
         request.headers['Host'] = request_host if request_host
       end
 
-      if raw
+      if raw_response
         response
       elsif auto_traversal && ( next_url = links(response)["next"] )
-        response.body + request(method, next_url, options, raw)
+        response.body + request(method, next_url, options)
       else
         response.body
       end

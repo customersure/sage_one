@@ -14,6 +14,7 @@ describe SageOne::Configuration do
     expect(SageOne::Configuration::DEFAULT_API_ENDPOINT).to eq('https://app.sageone.com/api/v1/')
     expect(SageOne::Configuration::DEFAULT_USER_AGENT).to eq("SageOne Ruby Gem #{SageOne::VERSION}")
     expect(SageOne::Configuration::DEFAULT_AUTO_TRAVERSAL).to be_false
+    expect(SageOne::Configuration::DEFAULT_RAW_RESPONSE).to be_false
     expect(SageOne::Configuration::VALID_OPTIONS_KEYS).to be_a(Array)
   end
 
@@ -81,6 +82,7 @@ describe SageOne::Configuration do
       expect(subject.request_host).to be_nil
       expect(subject.user_agent).to eq(SageOne::Configuration::DEFAULT_USER_AGENT)
       expect(subject.auto_traversal).to be_false
+      expect(subject.raw_response).to be_false
     end
   end
 

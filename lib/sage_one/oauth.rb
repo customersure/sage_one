@@ -24,7 +24,7 @@ module SageOne
         code:           code,
         redirect_uri:   redirect_uri
       }
-      post("/oauth/token/", params, raw=false)
+      post("/oauth/token/", params)
     end
   end
 end

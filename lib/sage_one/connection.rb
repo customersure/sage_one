@@ -8,7 +8,7 @@ module SageOne
   module Connection
     private
 
-    def connection(raw=false)
+    def connection
       options = {
         headers:  { 'Accept'        => "application/json; charset=utf-8",
                     'User-Agent'    => user_agent,
@@ -24,7 +24,7 @@ module SageOne
         conn.use FaradayMiddleware::OAuth2, access_token
         conn.use FaradayMiddleware::RaiseSageOneException
 
-        unless raw
+        unless raw_response
           conn.use FaradayMiddleware::Mashify
           conn.use FaradayMiddleware::ConvertSdataToHeaders
           conn.use FaradayMiddleware::ParseJson
