@@ -25,9 +25,9 @@ module SageOne
       response = connection(raw).send(method) do |request|
         case method
         when :delete, :get
-          options.merge!(:'$startIndex' => options[:start_index]) if options[:start_index]
+          options.merge!('$startIndex' => options.delete(:start_index)) if options[:start_index]
           request.url(path, options)
-        when :patch, :post, :put
+        when :post, :put
           request.path = path
           request.body = MultiJson.dump(options) unless options.empty?
         end

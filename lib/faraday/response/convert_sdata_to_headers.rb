@@ -16,7 +16,7 @@ module FaradayMiddleware
         @response = env[:response]
 
         # Only proceed if SData is actually present
-        next unless @response.body && @response.body[SDATA_TOTAL_RESULTS]
+        next unless @response.body && @response.body.kind_of?(Hash) && @response.body[SDATA_TOTAL_RESULTS]
 
         @url  = Addressable::URI::parse(env[:url])
         @url.query_values ||= {}

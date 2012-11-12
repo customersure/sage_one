@@ -67,3 +67,10 @@ end
 def fixture(file)
   File.new(fixture_path + '/' + file)
 end
+
+def sdata_fixture(fixture, total_results, start_index, items_per_page)
+  raw = fixture(fixture).read
+  raw.sub!(/"\$totalResults":(\d+)/, %Q("$totalResults":#{total_results}))
+  raw.sub!(/"\$startIndex":(\d+)/,   %Q("$startIndex":#{start_index}))
+  raw.sub!(/"\$itemsPerPage":(\d+)/, %Q("$itemsPerPage":#{items_per_page}))
+end
