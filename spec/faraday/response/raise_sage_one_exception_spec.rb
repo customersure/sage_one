@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Faraday::Response do
+describe FaradayMiddleware::RaiseSageOneException do
   let(:client) { SageOne::Client.new }
 
   {

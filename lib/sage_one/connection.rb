@@ -1,6 +1,7 @@
 require 'faraday_middleware'
 require 'faraday/request/oauth2'
 require 'faraday/response/raise_sage_one_exception'
+require 'faraday/response/convert_sdata_to_headers'
 
 module SageOne
   # @private
@@ -25,6 +26,7 @@ module SageOne
 
         unless raw
           conn.use FaradayMiddleware::Mashify
+          conn.use FaradayMiddleware::ConvertSdataToHeaders
           conn.use FaradayMiddleware::ParseJson
         end
 
