@@ -21,6 +21,23 @@ module SageOne
       def sales_invoices(options={})
         get("sales_invoices", options)
       end
+
+      def create_sales_invoice(options)
+        post('sales_invoices', sales_invoice: options)
+      end
+
+      def sales_invoice(id)
+        get "sales_invoices/#{id}"
+      end
+
+      def update_sales_invoice(id, options)
+        put("sales_invoices/#{id}", sales_invoice: options)
+      end
+
+      def delete_sales_invoice!(id)
+        delete("sales_invoices/#{id}")
+      end
+
     end
   end
 end
