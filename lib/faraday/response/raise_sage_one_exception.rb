@@ -1,8 +1,13 @@
 require 'faraday'
 
-# @private
+# @api private
 module FaradayMiddleware
-  # @private
+
+  # Checks the status of the API request and raises
+  # relevant exceptions when detected.
+  # @see SageOne::Error SageOne::Error for possible errors to rescue from.
+  #
+  # @api private
   class RaiseSageOneException < Faraday::Middleware
     def call(env)
       @app.call(env).on_complete do |response|
@@ -21,11 +26,6 @@ module FaradayMiddleware
           raise SageOne::UnprocessableEntity, error_message(response)
         end
       end
-    end
-
-    def initialize(app)
-      super app
-      @parser = nil
     end
 
     private
