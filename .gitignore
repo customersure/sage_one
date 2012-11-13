@@ -10,3 +10,4 @@ coverage
 _yardoc
 spec/reports
 rdoc
+doc/*
