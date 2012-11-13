@@ -27,17 +27,17 @@ describe SageOne::OAuth do
           client.client_secret = "SALMON"
           stub_post("https://app.sageone.com/oauth/token/").to_return(status: 401, body: fixture('oauth/invalid_client.json'))
         end
-        it { expect { client.get_access_token('uuddlrlr', 'http://www.example.com/endpoint') }.to raise_error(SageOne::Unauthorized, "POST https://app.sageone.com/oauth/token/: 401 invalid_client") }
+        it { expect { client.get_access_token('uuddlrlr', 'http://www.example.com/endpoint') }.to raise_error(SageOne::Unauthorized, /invalid_client/) }
       end
 
       context 'wrong code' do
         before { stub_post("https://app.sageone.com/oauth/token/").to_return(status: 400, body: fixture('oauth/invalid_grant.json')) }
-        it { expect { client.get_access_token('', 'http://www.example.com/endpoint') } .to raise_error(SageOne::BadRequest, "POST https://app.sageone.com/oauth/token/: 400 invalid_grant") }
+        it { expect { client.get_access_token('', 'http://www.example.com/endpoint') } .to raise_error(SageOne::BadRequest, /invalid_grant/) }
       end
 
       context 'wrong callback' do
         before { stub_post("https://app.sageone.com/oauth/token/").to_return(status: 401, body: '') }
-        it { expect { client.get_access_token('uuddlrlr', 'http://www.example.com/notendpoint') }.to raise_error(SageOne::Unauthorized, "POST https://app.sageone.com/oauth/token/: 401 ") }
+        it { expect { client.get_access_token('uuddlrlr', 'http://www.example.com/notendpoint') }.to raise_error(SageOne::Unauthorized, %q{{"method":"post","url":"https://app.sageone.com/oauth/token/","status":401,"body":""}}) }
       end
     end
   end
