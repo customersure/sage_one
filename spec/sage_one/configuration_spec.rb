@@ -10,7 +10,6 @@ describe SageOne::Configuration do
 
   it 'has some default constants setup' do
     expect(SageOne::Configuration::DEFAULT_ADAPTER).to eq(Faraday.default_adapter)
-    expect(SageOne::Configuration::DEFAULT_API_VERSION).to eq(1)
     expect(SageOne::Configuration::DEFAULT_API_ENDPOINT).to eq('https://app.sageone.com/api/v1/')
     expect(SageOne::Configuration::DEFAULT_USER_AGENT).to eq("SageOne Ruby Gem #{SageOne::VERSION}")
     expect(SageOne::Configuration::DEFAULT_AUTO_TRAVERSAL).to be_false
