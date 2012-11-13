@@ -11,3 +11,4 @@ _yardoc
 spec/reports
 rdoc
 doc/*
+start_irb

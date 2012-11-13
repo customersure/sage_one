@@ -4,6 +4,7 @@ require 'sage_one/request'
 require 'sage_one/oauth'
 
 require 'sage_one/client/sales_invoices'
+require 'sage_one/client/contacts'
 
 module SageOne
   class Client
@@ -27,5 +28,6 @@ module SageOne
     include SageOne::Request
     include SageOne::OAuth
     include SageOne::Client::SalesInvoices
+    include SageOne::Client::Contacts
   end
 end
