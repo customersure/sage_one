@@ -1,15 +1,22 @@
 require 'faraday'
 require 'faraday_middleware/response_middleware'
 
-# @private
+# @api private
 module FaradayMiddleware
-  # @private
+
+  # Middleware to strip out Sage's pagination SData from the body and place
+  # it in a custom response header instead (Using familiar 'Link' header syntax).
+  # This just leaves the resources in the body which can then be recursively
+  # collected later by following the links.
+  #
+  # @api private
   class ConvertSdataToHeaders < ResponseMiddleware
 
     SDATA_START_INDEX    = "$startIndex".freeze
     SDATA_TOTAL_RESULTS  = "$totalResults".freeze
     SDATA_ITEMS_PER_PAGE = "$itemsPerPage".freeze
     SDATA_RESOURCES      = "$resources".freeze
+    SDATA_HEADER_NAME    = "X-SData-Pagination-Links".freeze
 
     def call(env)
       @app.call(env).on_complete do
@@ -30,13 +37,11 @@ module FaradayMiddleware
         # Special case: If we're halfway through the first page, don't allow negative start indices
         add_link(0, 'prev') if @response.body[SDATA_START_INDEX] != 0 && prev_start_index < 0
 
-        unless @links.empty?
-          # Preserve existing Link header, if present
-          @links.unshift(@response.headers["Link"]) unless @response.headers["Link"].nil?
-          @response.headers["Link"] = @links.join(', ')
-        end
+        # Add the page links into the header
+        @response.headers[SDATA_HEADER_NAME] = @links.join(', ') unless @links.empty?
 
-        env[:body] = @response.body[SDATA_RESOURCES] # Strip out SData from body
+        # Strip out the SData from the body
+        env[:body] = @response.body[SDATA_RESOURCES]
       end
     end
 

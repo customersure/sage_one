@@ -9,6 +9,13 @@ module SageOne
   class Client
     attr_accessor(*Configuration::VALID_OPTIONS_KEYS)
 
+    # Creates an instance of Client configured with
+    # the current SageOne::Configuration options.
+    # Pass in a hash of any valid options to override
+    # them for this instance.
+    #
+    # @see SageOne::Configuration::VALID_OPTIONS_KEYS
+    #   SageOne::Configuration::VALID_OPTIONS_KEYS
     def initialize(options={})
       options = SageOne.options.merge(options)
       Configuration::VALID_OPTIONS_KEYS.each do |key|

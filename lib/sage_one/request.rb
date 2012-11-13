@@ -1,6 +1,10 @@
 require 'multi_json'
 
 module SageOne
+  # This helper methods in this module are used by the public api methods.
+  # They use the Faraday::Connection defined in connection.rb for making
+  # requests. Setting 'SageOne.raw_response' to true can help with debugging.
+  # @api private
   module Request
     def delete(path, options={})
       request(:delete, path, options)
@@ -44,7 +48,7 @@ module SageOne
     end
 
     def links(response)
-      links = ( response.headers["Link"] || "" ).split(', ').map do |link|
+      links = ( response.headers["X-SData-Pagination-Links"] || "" ).split(', ').map do |link|
         url, type = link.match(/<(.*?)>; rel="(\w+)"/).captures
         [ type, url ]
       end

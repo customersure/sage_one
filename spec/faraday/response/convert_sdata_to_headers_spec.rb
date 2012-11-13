@@ -22,8 +22,8 @@ describe FaradayMiddleware::ConvertSdataToHeaders do
       it "adds a next link" do
         stub_get('sales_invoices').to_return(body: sdata_fixture('sales_invoices.json', 40, 0, 20))
         response = connection.get('sales_invoices')
-        expect(response.headers['Link']).to_not be_nil
-        expect(response.headers['Link']).to include(%Q{<#{sage_url('sales_invoices?%24startIndex=20')}>; rel="next"})
+        expect(response.headers['X-Sdata-Pagination-Links']).to_not be_nil
+        expect(response.headers['X-Sdata-Pagination-Links']).to include(%Q{<#{sage_url('sales_invoices?%24startIndex=20')}>; rel="next"})
       end
     end
   end
@@ -36,8 +36,8 @@ describe FaradayMiddleware::ConvertSdataToHeaders do
     end
     it "adds a prev link" do
       response = connection.get('sales_invoices')
-      expect(response.headers['Link']).to_not be_nil
-      expect(response.headers['Link']).to include(%Q{<#{sage_url('sales_invoices?%24startIndex=0')}>; rel="prev"})
+      expect(response.headers['X-Sdata-Pagination-Links']).to_not be_nil
+      expect(response.headers['X-Sdata-Pagination-Links']).to include(%Q{<#{sage_url('sales_invoices?%24startIndex=0')}>; rel="prev"})
     end
     context "when requesting a value in the middle of the last page" do
       before { stub_get('sales_invoices').to_return(body: sdata_fixture('sales_invoices.json', 40, 30, 20)) }
@@ -47,8 +47,8 @@ describe FaradayMiddleware::ConvertSdataToHeaders do
       end
       it "adds a prev link" do
         response = connection.get('sales_invoices')
-        expect(response.headers['Link']).to_not be_nil
-        expect(response.headers['Link']).to include(%Q{<#{sage_url('sales_invoices?%24startIndex=10')}>; rel="prev"})
+        expect(response.headers['X-Sdata-Pagination-Links']).to_not be_nil
+        expect(response.headers['X-Sdata-Pagination-Links']).to include(%Q{<#{sage_url('sales_invoices?%24startIndex=10')}>; rel="prev"})
       end
     end
   end
@@ -57,7 +57,7 @@ describe FaradayMiddleware::ConvertSdataToHeaders do
     before { stub_get('sales_invoices').to_return(body: sdata_fixture('sales_invoices.json', 5, 0, 20)) }
     it "adds no links" do
       response = connection.get('sales_invoices')
-      expect(response.headers['Link']).to be_nil
+      expect(response.headers['X-Sdata-Pagination-Links']).to be_nil
     end
   end
 
@@ -65,19 +65,11 @@ describe FaradayMiddleware::ConvertSdataToHeaders do
     before { stub_get('sales_invoices').to_return(body: sdata_fixture('sales_invoices.json', 20, 10, 5)) }
     it "adds a prev link" do
       response = connection.get('sales_invoices')
-      expect(response.headers['Link']).to include(%Q{<#{sage_url('sales_invoices?%24startIndex=5')}>; rel="prev"})
+      expect(response.headers['X-Sdata-Pagination-Links']).to include(%Q{<#{sage_url('sales_invoices?%24startIndex=5')}>; rel="prev"})
     end
     it "adds a next link" do
       response = connection.get('sales_invoices')
-      expect(response.headers['Link']).to include(%Q{<#{sage_url('sales_invoices?%24startIndex=15')}>; rel="next"})
-    end
-  end
-
-  context "when there is already a Link header present" do
-    before { stub_get('sales_invoices').to_return(body: sdata_fixture('sales_invoices.json', 20, 10, 5), headers: { 'Link' => '<mailto:timbl@w3.org>; rev="Made"; title="Tim Berners-Lee"' }) }
-    it "does not destroy it" do
-      response = connection.get('sales_invoices')
-      expect(response.headers['Link']).to eq('<mailto:timbl@w3.org>; rev="Made"; title="Tim Berners-Lee", <https://app.sageone.com/api/v1/sales_invoices?%24startIndex=15>; rel="next", <https://app.sageone.com/api/v1/sales_invoices?%24startIndex=5>; rel="prev"')
+      expect(response.headers['X-Sdata-Pagination-Links']).to include(%Q{<#{sage_url('sales_invoices?%24startIndex=15')}>; rel="next"})
     end
   end
 
@@ -91,7 +83,7 @@ describe FaradayMiddleware::ConvertSdataToHeaders do
     before { stub_get('sales_invoices?search=salad&from_date=2012-11-11').to_return(body: sdata_fixture('sales_invoices.json', 20, 10, 5)) }
     it "it passes them through without modification" do
       response = connection.get('sales_invoices?from_date=2012-11-11&search=salad')
-      expect(response.headers['Link']).to eq('<https://app.sageone.com/api/v1/sales_invoices?%24startIndex=15&from_date=2012-11-11&search=salad>; rel="next", <https://app.sageone.com/api/v1/sales_invoices?%24startIndex=5&from_date=2012-11-11&search=salad>; rel="prev"')
+      expect(response.headers['X-Sdata-Pagination-Links']).to eq('<https://app.sageone.com/api/v1/sales_invoices?%24startIndex=15&from_date=2012-11-11&search=salad>; rel="next", <https://app.sageone.com/api/v1/sales_invoices?%24startIndex=5&from_date=2012-11-11&search=salad>; rel="prev"')
     end
   end
 
@@ -99,7 +91,7 @@ describe FaradayMiddleware::ConvertSdataToHeaders do
     before { stub_get('sales_invoices/954380').to_return(body: fixture('sales_invoice.json')) }
     it "does not create link headers" do
       response = connection.get('sales_invoices/954380')
-      expect(response.headers['Link']).to be_nil
+      expect(response.headers['X-Sdata-Pagination-Links']).to be_nil
     end
     it "leaves the resources in the body of the response" do
       response = connection(false).get('sales_invoices/954380')
@@ -111,11 +103,11 @@ describe FaradayMiddleware::ConvertSdataToHeaders do
     before { stub_get('sales_invoices').to_return(body: sdata_fixture('sales_invoices.json', 20, 3, 5)) }
     it "Adds a previous link to start_index=0" do
       response = connection.get('sales_invoices')
-      expect(response.headers['Link']).to include(%Q{<#{sage_url('sales_invoices?%24startIndex=0')}>; rel="prev"})
+      expect(response.headers['X-Sdata-Pagination-Links']).to include(%Q{<#{sage_url('sales_invoices?%24startIndex=0')}>; rel="prev"})
     end
     it "Adds a next link to start_index=8" do
       response = connection.get('sales_invoices')
-      expect(response.headers['Link']).to include(%Q{<#{sage_url('sales_invoices?%24startIndex=8')}>; rel="next"})
+      expect(response.headers['X-Sdata-Pagination-Links']).to include(%Q{<#{sage_url('sales_invoices?%24startIndex=8')}>; rel="next"})
     end
   end
 end
