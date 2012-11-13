@@ -48,7 +48,7 @@ module SageOne
     end
 
     def links(response)
-      links = ( response.headers["Link"] || "" ).split(', ').map do |link|
+      links = ( response.headers["X-SData-Pagination-Links"] || "" ).split(', ').map do |link|
         url, type = link.match(/<(.*?)>; rel="(\w+)"/).captures
         [ type, url ]
       end
