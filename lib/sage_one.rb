@@ -16,6 +16,8 @@ module SageOne
     end
 
     # True if the method can be delegated to the SageOne::Client
+    #
+    # @return [Boolean]
     def respond_to?(method, include_private=false)
       new.respond_to?(method, include_private) || super(method, include_private)
     end
