@@ -33,6 +33,7 @@ module SageOne
           request.url(path, options)
         when :post, :put
           request.path = path
+          options = format_datelike_objects!(options) unless options.empty?
           request.body = MultiJson.dump(options) unless options.empty?
         end
         request.headers['Host'] = request_host if request_host
@@ -55,5 +56,12 @@ module SageOne
 
       Hash[ *links.flatten ]
     end
+
+    def format_datelike_objects!(options)
+      new_opts = {}
+      options.map { |k,v| new_opts[k] = v.respond_to?(:strftime) ? v.strftime("%d/%m/%Y") : v }
+      new_opts
+    end
+
   end
 end

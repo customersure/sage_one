@@ -47,6 +47,13 @@ describe SageOne::Request do
         client.put('sales_invoices', { "void_reason" => nil, "outstanding_amount" => "17.0", "total_net_amount" => "14.17"})
         a_put('sales_invoices').with(body: '{"void_reason":null,"outstanding_amount":"17.0","total_net_amount":"14.17"}').should have_been_made.once
       end
+      describe 'auto-conversion of Date-y objects' do
+        it "converts any options which are passed which resemble a date into a correctly-formatted date" do
+          stub_put('sales_invoices/222')
+          client.put('sales_invoices/222', { start_date: Time.new(2012, 10, 20)})
+          a_put('sales_invoices/222').with(body: '{"start_date":"20/10/2012"}').should have_been_made.once
+        end
+      end
     end
 
     it 'Sets a request host if one is specified' do
