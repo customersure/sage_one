@@ -1,5 +1,6 @@
 require 'faraday'
 require 'faraday_middleware/response_middleware'
+require 'addressable/uri'
 
 # @api private
 module FaradayMiddleware
