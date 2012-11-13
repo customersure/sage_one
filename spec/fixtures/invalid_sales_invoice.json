@@ -1,0 +1,28 @@
+{
+  "$diagnoses": [
+    {
+      "$severity":"error",
+      "$dataCode":"ValidationError",
+      "$message":"blank",
+      "$source":"due_date"
+    },
+    {
+      "$severity":"error",
+      "$dataCode":"ValidationError",
+      "$message":"invalid date",
+      "$source":"due_date"
+    },
+    {
+      "$severity":"error",
+      "$dataCode":"ValidationError",
+      "$message":"blank",
+      "$source":"carriage_tax_code_id"
+    },
+    {
+      "$severity":"error",
+      "$dataCode":"ValidationError",
+      "$message":"The type of sale associated with a product/service no longer exists. Check product/service and try again.",
+      "$source":"line_items"
+    }
+  ]
+}

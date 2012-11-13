@@ -21,16 +21,17 @@ describe FaradayMiddleware::RaiseSageOneException do
     end
   end
 
-  [
-    {:error => "Unauthorised activity"}
-  ].each do |body|
-    context "when the response body contains an error message" do
+  context "when the response body contains an error: key (i.e. from OAuth)" do
+    before { stub_get('sales_invoices').to_return(:status => 400, body: { error: "Unauthorised Access" }) }
+    it "raises an error with the error message" do
+      expect { client.sales_invoices }.to raise_error(SageOne::BadRequest, /Unauthorised Access/)
+    end
+  end
 
-      before { stub_get('sales_invoices').to_return(:status => 400, body: body) }
-
-      it "raises an error with the error message" do
-        expect { client.sales_invoices }.to raise_error(SageOne::BadRequest, /#{body.values.first}/)
-      end
+  context "when the response body contains validation errors" do
+    before { stub_post('sales_invoices').to_return(:status => 422, body: fixture('invalid_sales_invoice.json')) }
+    it "includes the validation errors" do
+      expect { client.post('sales_invoices', {}) }.to raise_error(SageOne::UnprocessableEntity, /due_date: invalid date/)
     end
   end
 

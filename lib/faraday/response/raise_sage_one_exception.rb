@@ -31,7 +31,15 @@ module FaradayMiddleware
     private
 
     def error_message(response)
-      "#{response[:method].to_s.upcase} #{response[:url].to_s}: #{response[:status]} #{response[:body].nil? ? '' : response[:body][:error]}"
+      "#{response[:method].to_s.upcase} #{response[:url].to_s}: #{response[:status]} #{response_body_to_message(response[:body])}"
+    end
+
+    def response_body_to_message(body)
+      return "" if body.nil?  # Nothing
+      return body[:error] unless body[:error].nil? # OAuth requests
+      rtn = []
+      body['$diagnoses'].each { |d| rtn << "#{d['$source']}: #{d['$message']}" } unless body['$diagnoses'].nil?
+      rtn.join(', ')
     end
 
   end
