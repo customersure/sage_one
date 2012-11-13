@@ -4,10 +4,14 @@ require 'faraday/response/raise_sage_one_exception'
 require 'faraday/response/convert_sdata_to_headers'
 
 module SageOne
-  # @private
+  # @api private
+  # @note Used by request.rb to make Faraday requests to the SageOne API.
   module Connection
     private
 
+    # @return [Faraday::Connection] configured with the headers SageOne expects
+    #   and our required middleware stack. raw_response can be set to true to
+    #   help with debugging.
     def connection
       options = {
         headers:  { 'Accept'        => "application/json; charset=utf-8",
