@@ -59,7 +59,13 @@ module SageOne
 
     def format_datelike_objects!(options)
       new_opts = {}
-      options.map { |k,v| new_opts[k] = v.respond_to?(:strftime) ? v.strftime("%d/%m/%Y") : v }
+      options.map do |k,v|
+        if v.respond_to?(:map)
+          new_opts[k] = format_datelike_objects!(v)
+        else
+          new_opts[k] = v.respond_to?(:strftime) ? v.strftime("%d/%m/%Y") : v
+        end
+      end
       new_opts
     end
 
