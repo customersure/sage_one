@@ -6,7 +6,6 @@ rvm:
   - rbx-19mode
   - ruby-head
   - jruby-head
-  - ree
 before_install:
   - gem update --system
   - gem --version
