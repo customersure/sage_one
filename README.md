@@ -48,7 +48,17 @@ end
 invoices = SageOne.sales_invoices
 
 # Add search params
-SageOne.sales_invoices(start_date: '28/02/2010')
+SageOne.sales_invoices(status: 2, contact: 65489)
+
+# Dates in search params...
+# The SageOne API requires that you specify dates as dd/mm/yyyy
+SageOne.sales_invoices(from_date: '21/11/2011')
+
+# We simplify this by also allowing you to specify a date-like object (anything that responds to strftime)
+SageOne.sales_invoices(from_date: 2.weeks.ago)  #rails
+
+# Note that we can't protect you from doing the wrong thing with ambiguous dates..
+SageOne.sales_invoices(from_date: '05/01/2012') # Hope that you meant 5th January and not 1st May
 ```
 You can configure the `SageOne` client on the fly. For example, if you'd prefer to configure your client_id and secret in an
 initializer then set the access_token in a controller:

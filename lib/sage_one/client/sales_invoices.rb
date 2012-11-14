@@ -2,9 +2,6 @@ module SageOne
   class Client
     module SalesInvoices
 
-      # TODO:
-      # Make date option work with objects
-
       # List sales invoices
       # @param options [Hash] A customizable set of options.
       # @option options [Integer] :contact Milestone number.
