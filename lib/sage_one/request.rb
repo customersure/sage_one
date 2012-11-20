@@ -25,7 +25,7 @@ module SageOne
     private
 
     def request(method, path, options)
-
+      options = format_datelike_objects!(options) unless options.empty?
       response = connection.send(method) do |request|
         case method
         when :delete, :get
@@ -33,7 +33,6 @@ module SageOne
           request.url(path, options)
         when :post, :put
           request.path = path
-          options = format_datelike_objects!(options) unless options.empty?
           request.body = MultiJson.dump(options) unless options.empty?
         end
         request.headers['Host'] = request_host if request_host

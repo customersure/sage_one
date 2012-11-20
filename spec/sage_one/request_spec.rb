@@ -53,6 +53,11 @@ describe SageOne::Request do
           client.put('sales_invoices/222', { start_date: Time.new(2012, 10, 20), contents: { another_date: Time.new(2011, 8, 31) }})
           a_put('sales_invoices/222').with(body: '{"start_date":"20/10/2012","contents":{"another_date":"31/08/2011"}}').should have_been_made.once
         end
+        it "converts for any type of request, not just puts (regression test)" do
+          stub_get('sales_invoices?contents%5Banother_date%5D=31/08/2011&start_date=20/10/2012')
+          client.get('sales_invoices', { start_date: Time.new(2012, 10, 20), contents: { another_date: Time.new(2011, 8, 31) }})
+          a_get('sales_invoices?contents%5Banother_date%5D=31/08/2011&start_date=20/10/2012').should have_been_made.once
+        end
       end
     end
 
