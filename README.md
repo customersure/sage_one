@@ -136,6 +136,6 @@ The `sage_one` gem was created by [Luke Brown][luke] and [Chris Stainthorpe][chr
 [instagram-ruby-gem]: https://github.com/Instagram/instagram-ruby-gem/
 
 ## Copyright
-Copyright (c) 2011 Chris Stainthorpe, Luke Brown. See [LICENSE][] for details.
+Copyright (c) 2012 Chris Stainthorpe, Luke Brown. See [LICENSE][] for details.
 
 [license]: https://github.com/customersure/sage_one/blob/master/LICENSE
