@@ -5,7 +5,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'addressable', '~>2.3'
   s.add_dependency 'faraday', '~>0.8'
   s.add_dependency 'faraday_middleware', '~> 0.9'
-  s.add_dependency 'hashie', '~>1.2'
+  s.add_dependency 'hashie', '~>2.0'
   s.add_dependency 'multi_json', '~> 1.4'
 
   s.add_development_dependency 'json'
