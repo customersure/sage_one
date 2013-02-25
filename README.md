@@ -1,4 +1,4 @@
-# Sage One [![Build Status](https://secure.travis-ci.org/customersure/sage_one.png?branch=master)][travis] [![Dependency Status](https://gemnasium.com/7b1e86c3d9e3583a684d326a97ba06d0.png)][gemnasium]
+# Sage One [![Build Status](https://secure.travis-ci.org/customersure/sage_one.png?branch=master)][travis] [![Dependency Status](https://gemnasium.com/customersure/sage_one.png)][gemnasium]
 Faraday-based Ruby wrapper for the Sage One API
 
 [travis]: http://travis-ci.org/customersure/sage_one
