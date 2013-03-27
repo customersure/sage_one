@@ -3,7 +3,7 @@ require 'spec_helper'
 describe SageOne::Connection  do
 
   let(:client)              { SageOne.new }
-  let(:basic_middleware)    { %w(FaradayMiddleware::EncodeJson FaradayMiddleware::OAuth2 FaradayMiddleware::RaiseSageOneException) }
+  let(:basic_middleware)    { %w(FaradayMiddleware::EncodeJson FaradayMiddleware::OAuth2 FaradayMiddleware::RaiseSageOneException FaradayMiddleware::FollowRedirects) }
   let(:non_raw_middleware)  { %w(FaradayMiddleware::Mashify FaradayMiddleware::ParseJson) }
 
   it "returns a Faraday" do

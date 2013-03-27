@@ -68,6 +68,20 @@ describe SageOne::Request do
       a_get('sales_invoices').with(headers: { "Host" => 'CustomerHost' }).should have_been_made.once
     end
 
+    context 'being redirected' do
+      before do
+        stub_get('http://www.example.com/')
+        stub_request(:get, sage_url('sales_invoices'))
+          .to_return(body:   '<!doctype html><html><head><title>hello</title></head><body><p>Word up.</p></body></html>',
+                     status: 301,
+                     headers: { 'Location' => 'http://www.example.com/' } )
+      end
+      it 'follows redirects (before it tries to parse the html body with a json parser)' do
+        client.get('sales_invoices')
+        a_get('http://www.example.com/').should have_been_made
+      end
+    end
+
     describe "response body" do
       context 'raw requested' do
         it "returns a faraday response" do

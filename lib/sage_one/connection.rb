@@ -34,6 +34,8 @@ module SageOne
           conn.use FaradayMiddleware::ParseJson
         end
 
+        conn.use FaradayMiddleware::FollowRedirects, limit: 1
+
         faraday_config_block.call(conn) if faraday_config_block
 
         conn.adapter(adapter)
