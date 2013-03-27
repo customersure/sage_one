@@ -15,7 +15,7 @@ describe SageOne::OAuth do
 
       stub_post("https://app.sageone.com/oauth/token/").
         with(:body => "{\"client_id\":\"CLIENT_ID\",\"client_secret\":\"CLIENT_SECRET\",\"grant_type\":\"authorization_code\",\"code\":\"uuddlrlr\",\"redirect_uri\":\"http://www.example.com/endpoint\"}",
-              :headers => {'Accept'=>'application/json; charset=utf-8', 'Content-Type'=>'application/json', 'User-Agent'=>'SageOne Ruby Gem 0.0.1'}).
+              :headers => {'Accept'=>'application/json; charset=utf-8', 'Content-Type'=>'application/json'}).
         to_return(:body => fixture("oauth/oauth_token.json"))
 
       expect(client.get_access_token('uuddlrlr', 'http://www.example.com/endpoint').access_token).to eq('IguLPAK5VPvDSw3z4SjrkhHTyRXgnnqAPzt1mLUk')
