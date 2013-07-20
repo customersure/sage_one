@@ -27,7 +27,7 @@ describe SageOne do
     context "when the client does respond to the method" do
       it 'delegates the call to the client, passing any args and block' do
         block = Proc.new { puts "hi" }
-        mock_client = mock('SageOne::Client', :my_method => 'called')
+        mock_client = double('SageOne::Client', :my_method => 'called')
         SageOne.should_receive(:new).twice.and_return(mock_client)
         mock_client.should_receive(:my_method).with('abc', block)
         SageOne.my_method('abc', block)
