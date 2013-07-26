@@ -12,3 +12,5 @@ spec/reports
 rdoc
 doc/*
 start_irb
+.ruby-gemset
+.ruby-version
