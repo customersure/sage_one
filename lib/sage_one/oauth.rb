@@ -11,8 +11,6 @@ module SageOne
   # @see #get_access_token Step 2 - Access Token Request
   module OAuth
 
-    GET_TOKEN_END_POINT = 'https://accounts.sageone.com/'.freeze
-
     # Generates the OAuth URL for redirecting users to SageOne. You should ensure
     # the your SageOne.client_id is configured before calling this method.
     #
@@ -45,7 +43,6 @@ module SageOne
         code:           code,
         redirect_uri:   callback_url
       }
-      self.api_endpoint = GET_TOKEN_END_POINT
       post("/oauth/token/", params)
     end
   end
