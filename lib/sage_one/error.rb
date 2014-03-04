@@ -36,4 +36,7 @@ module SageOne
   # Raised when SageOne returns a 503 HTTP status code
   class ServiceUnavailable < Error; end
 
+  # Raised when SageOne returns HTML instead of JSON
+  class ParsingError < Error; end
+
 end

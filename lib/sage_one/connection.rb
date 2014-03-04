@@ -3,6 +3,7 @@ require 'typhoeus/adapters/faraday'
 require 'faraday_middleware'
 require 'faraday/request/oauth2'
 require 'faraday/response/raise_sage_one_exception'
+require 'faraday/response/rescue_parsing_errors'
 require 'faraday/response/convert_sdata_to_headers'
 
 module SageOne
@@ -30,6 +31,7 @@ module SageOne
 
         conn.use FaradayMiddleware::OAuth2, access_token
         conn.use FaradayMiddleware::RaiseSageOneException
+        conn.use FaradayMiddleware::RescueParsingErrors
 
         unless raw_response
           conn.use FaradayMiddleware::Mashify
