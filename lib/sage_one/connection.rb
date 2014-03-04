@@ -1,3 +1,5 @@
+require 'typhoeus'
+require 'typhoeus/adapters/faraday'
 require 'faraday_middleware'
 require 'faraday/request/oauth2'
 require 'faraday/response/raise_sage_one_exception'
@@ -23,6 +25,7 @@ module SageOne
       }
 
       Faraday.new(options) do |conn|
+        conn.adapter :typhoeus
         conn.request :json
 
         conn.use FaradayMiddleware::OAuth2, access_token
