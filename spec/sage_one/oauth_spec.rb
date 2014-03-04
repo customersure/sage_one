@@ -37,7 +37,7 @@ describe SageOne::OAuth do
 
       context 'wrong callback' do
         before { stub_post("https://app.sageone.com/oauth/token/").to_return(status: 401, body: '') }
-        it { expect { client.get_access_token('uuddlrlr', 'http://www.example.com/notendpoint') }.to raise_error(SageOne::Unauthorized, %q{{"method":"post","url":"https://accounts.sageone.com/oauth/token/","status":401,"body":""}}) }
+        it { expect { client.get_access_token('uuddlrlr', 'http://www.example.com/notendpoint') }.to raise_error(SageOne::Unauthorized, %q{{"method":"post","url":"https://app.sageone.com/oauth/token/","status":401,"body":""}}) }
       end
     end
   end
