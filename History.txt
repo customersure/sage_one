@@ -1,3 +1,6 @@
+== 0.0.5 2013-03-27
+* Git ignore /bin to prevent Bundler using our binstubs where this gem is used
+
 == 0.0.2 2013-03-27
 
 * Follow HTTP Redirects.
