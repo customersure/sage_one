@@ -26,7 +26,8 @@ module SageOne
 
     def request(method, path, options)
       options = format_datelike_objects!(options) unless options.empty?
-      response = connection.send(method) do |request|
+      request_options = retrieve_request_options(api_endpoint, content_type)
+      response = connection(request_options).send(method) do |request|
         case method
         when :delete, :get
           options.merge!('$startIndex' => options.delete(:start_index)) if options[:start_index]
@@ -45,6 +46,17 @@ module SageOne
       else
         response.body
       end
+    end
+
+    def retrieve_request_options(endpoint, content_type)
+      {
+        headers:  { 'Accept'        => "application/json; charset=utf-8",
+                    'User-Agent'    => user_agent,
+                    'Content-Type'  => content_type },
+        proxy:    proxy,
+        ssl:      { verify: false },
+        url:      endpoint
+      }
     end
 
     def links(response)
