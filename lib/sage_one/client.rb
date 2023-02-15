@@ -3,8 +3,9 @@ require 'sage_one/request'
 
 require 'sage_one/oauth'
 
-require 'sage_one/client/sales_invoices'
-require 'sage_one/client/contacts'
+API_ENDPOINTS = %w[contacts sales_invoices tax_rates stock_movements stock_items services payment_methods contact_payments bank_accounts sales_invoices]
+
+API_ENDPOINTS.each { |file_name| require "sage_one/client/V3_1/#{file_name}.rb" }
 
 module SageOne
   class Client
@@ -17,7 +18,7 @@ module SageOne
     #
     # @see SageOne::Configuration::VALID_OPTIONS_KEYS
     #   SageOne::Configuration::VALID_OPTIONS_KEYS
-    def initialize(options={})
+    def initialize(options = {})
       options = SageOne.options.merge(options)
       Configuration::VALID_OPTIONS_KEYS.each do |key|
         send("#{key}=", options[key])
@@ -27,7 +28,11 @@ module SageOne
     include SageOne::Connection
     include SageOne::Request
     include SageOne::OAuth
-    include SageOne::Client::SalesInvoices
-    include SageOne::Client::Contacts
+
+    API_ENDPOINTS.each do |file|
+      file_name_without_extension = File.basename(file, '.rb')
+      file_name = file_name_without_extension.split('_').map(&:capitalize).join
+      include const_get("SageOne::Client::V3_1::#{file_name}")
+    end
   end
 end

@@ -1,6 +1,6 @@
 module SageOne
   class Client
-    module V3
+    module V3_1
       # module SageOne::Client::V3::Services
       module Services
         # List Services

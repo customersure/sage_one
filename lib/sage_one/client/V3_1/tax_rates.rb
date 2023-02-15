@@ -1,6 +1,6 @@
 module SageOne
   class Client
-    module V3
+    module V3_1
       # module SageOne::Client::V3::TaxRates
       module TaxRates
         # Currently Create, Update and Delete APIs are only available for US. 

@@ -1,6 +1,6 @@
 module SageOne
   class Client
-    module V3
+    module V3_1
       # A contact payment is a payment that relates to a contact and
       # an artefact that requires payment, i.e. usually an invoice.
 
