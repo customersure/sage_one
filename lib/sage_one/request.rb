@@ -25,7 +25,7 @@ module SageOne
     private
 
     def request(method, path, options)
-      options = format_datelike_objects!(options) unless options.empty?
+      options = format_datelike_objects!(options) if options.present?
       request_options = retrieve_request_options(api_endpoint, content_type)
       response = connection(request_options).send(method) do |request|
         case method
@@ -68,16 +68,19 @@ module SageOne
       Hash[ *links.flatten ]
     end
 
+    # It Converts "ruby date objects" into correctly formatted "date strings".
+    # It modifies given hash directly, without creating a separate copy.
     def format_datelike_objects!(options)
-      new_opts = {}
-      options.map do |k,v|
-        if v.respond_to?(:map)
-          new_opts[k] = format_datelike_objects!(v)
-        else
-          new_opts[k] = v.respond_to?(:strftime) ? v.strftime("%d/%m/%Y") : v
+      options.each do |key, value|
+        case value.is_a?
+        when Date
+          options[key] = value.strftime('%d/%m/%Y')
+        when Array
+          value.each { |item| format_datelike_objects!(item) if item.is_a?(Hash) }
+        when Hash
+          format_datelike_objects!(value)
         end
       end
-      new_opts
     end
 
   end
