@@ -78,5 +78,21 @@ module SageOne
 
       raw_response ? response : response.body
     end
+
+    def revoke_refresh_token(refresh_token)
+      params = {
+        client_id:     client_id,
+        client_secret: client_secret,
+        token: refresh_token
+      }
+
+      options = retrieve_request_options(token_url_prefix, token_content_type)
+      response = connection(options).post do |request|
+        request.path = revoke_token_url_postfix
+        request.body = URI.encode_www_form(params)
+      end
+
+      raw_response ? response : response.body
+    end
   end
 end
