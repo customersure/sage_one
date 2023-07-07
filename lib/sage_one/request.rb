@@ -52,7 +52,8 @@ module SageOne
       {
         headers:  { 'Accept'        => "application/json; charset=utf-8",
                     'User-Agent'    => user_agent,
-                    'Content-Type'  => content_type },
+                    'Content-Type'  => content_type,
+                    'X-Business'    => business_id },
         proxy:    proxy,
         ssl:      { verify: false },
         url:      endpoint
