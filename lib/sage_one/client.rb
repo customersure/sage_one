@@ -3,7 +3,7 @@ require 'sage_one/request'
 
 require 'sage_one/oauth'
 
-API_ENDPOINTS = %w[contacts sales_invoices tax_rates stock_movements stock_items services payment_methods contact_payments bank_accounts sales_invoices]
+API_ENDPOINTS = %w[businesses contacts contact_persons addresses sales_invoices tax_rates stock_movements stock_items services payment_methods contact_payments bank_accounts ledger_accounts sales_invoices]
 
 API_ENDPOINTS.each { |file_name| require "sage_one/client/V3_1/#{file_name}.rb" }
 
