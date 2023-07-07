@@ -73,7 +73,7 @@ module SageOne
     # It modifies given hash directly, without creating a separate copy.
     def format_datelike_objects!(options)
       options.each do |key, value|
-        case value.is_a?
+        case value
         when Date
           options[key] = value.strftime('%d/%m/%Y')
         when Array
