@@ -24,6 +24,9 @@ module SageOne
   # Raised when SageOne returns a 422 HTTP status code
   class UnprocessableEntity < Error; end
 
+  # Raised when SageOne returns a 4xx HTTP status code that does not have a specific exception class defined.
+  class ClientError < Error; end
+
   # Raised when SageOne returns a 500 HTTP status code
   class InternalServerError < Error; end
 
@@ -36,4 +39,6 @@ module SageOne
   # Raised when SageOne returns a 503 HTTP status code
   class ServiceUnavailable < Error; end
 
+  # Raised when SageOne returns a 5xx HTTP status code that does not have a specific exception class defined.
+  class ServerError < Error; end
 end

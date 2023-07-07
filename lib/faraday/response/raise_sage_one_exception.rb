@@ -24,6 +24,18 @@ module FaradayMiddleware
           raise SageOne::Conflict, error_message(response)
         when 422
           raise SageOne::UnprocessableEntity, error_message(response)
+        when (400..499)
+          raise SageOne::ClientError, error_message(response)
+        when 500
+          raise SageOne::InternalServerError, error_message(response)
+        when 501
+          raise SageOne::NotImplemented, error_message(response)
+        when 502
+          raise SageOne::BadGateway, error_message(response)
+        when 503
+          raise SageOne::ServiceUnavailable, error_message(response)
+        when (500..599)
+          raise SageOne::ServerError, error_message(response)
         end
       end
     end
