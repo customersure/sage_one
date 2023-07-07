@@ -52,8 +52,8 @@ module SageOne
         # @return [Invoice] A Hashie of the requested invoice
         # @example Load an invoice
         #     invoice = SageOne.sales_invoice(8754)
-        def sales_invoice(id)
-          get "sales_invoices/#{id}"
+        def sales_invoice(id, options = {})
+          get("sales_invoices/#{id}", options)
         end
 
         # Update a sales invoice
@@ -65,13 +65,13 @@ module SageOne
           put("sales_invoices/#{id}", sales_invoice: options)
         end
 
-        # Delete a sales invoice
-        # @param id [Integer] The id of the invoice you want to delete.
-        # @return [Invoice] A Hashie of the deleted invoice
-        # @example Delete an invoice
-        #    invoice = SageOne.delete_sales_invoice!(12)
-        def delete_sales_invoice!(id)
-          delete("sales_invoices/#{id}")
+        # Void a sales invoice
+        # @param id [Integer] The id of the invoice you want to Void.
+        # @return [Invoice] A Hashie of the Voidd invoice
+        # @example Void an invoice
+        #    invoice = SageOne.void_sales_invoice!(12)
+        def void_sales_invoice!(id, void_reason)
+          delete("sales_invoices/#{id}?void_reason=#{void_reason}")
         end
       end
     end
