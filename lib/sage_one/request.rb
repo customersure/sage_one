@@ -41,8 +41,16 @@ module SageOne
 
       if raw_response
         response
-      elsif auto_traversal && ( next_url = links(response)["next"] )
-        response.body + request(method, next_url, options)
+      elsif auto_traversal
+        next_link = next_link(response)
+
+        if next_link.present?
+          recursive_response_body = request(method, next_link, options)
+          # TODO: Modify response.body other details too.
+          response.body['$items'] = response.body['$items'] + recursive_response_body['$items']
+        end
+
+        response.body
       else
         response.body
       end
@@ -60,13 +68,8 @@ module SageOne
       }
     end
 
-    def links(response)
-      links = ( response.headers["X-SData-Pagination-Links"] || "" ).split(', ').map do |link|
-        url, type = link.match(/<(.*?)>; rel="(\w+)"/).captures
-        [ type, url ]
-      end
-
-      Hash[ *links.flatten ]
+    def next_link(response)
+      (response.body["$next"] || "").match(/(?<=\/).*items_per_page=[0-9]+/).to_s
     end
 
     # It Converts "ruby date objects" into correctly formatted "date strings".
