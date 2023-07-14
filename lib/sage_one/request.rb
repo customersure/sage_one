@@ -69,6 +69,9 @@ module SageOne
     end
 
     def next_link(response)
+      # response.body of destory request can be blank.
+      return '' if response.body.blank?
+
       (response.body["$next"] || "").match(/(?<=\/).*items_per_page=[0-9]+/).to_s
     end
 
