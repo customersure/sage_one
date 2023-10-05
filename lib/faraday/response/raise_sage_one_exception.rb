@@ -52,7 +52,7 @@ module FaradayMiddleware
     end
 
     def format_response_body(response_body_error_messages)
-      return '' if response_body_error_messages.nil?
+      return [] if response_body_error_messages.nil?
 
       response_body_error_messages = [response_body_error_messages] unless response_body_error_messages.is_a?(Array)
 
@@ -68,7 +68,7 @@ module FaradayMiddleware
 
         formatted_message = formatted_message_parts.join(' ')
         formatted_message.empty? ? message : formatted_message
-      end.join(' ')
+      end
     end
 
     def append_source_in_error_message?(error_source)
