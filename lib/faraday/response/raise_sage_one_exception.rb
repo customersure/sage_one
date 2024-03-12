@@ -59,7 +59,7 @@ module FaradayMiddleware
       response_body_error_messages.map do |message|
         data_code    = message['$dataCode'].presence
         source       = message['$source'].presence
-        message_text = message['$message'].presence
+        message_text = message['$message'].presence || message['error_description'].presence
 
         formatted_message_parts = []
         formatted_message_parts << "#{data_code}:" if data_code
