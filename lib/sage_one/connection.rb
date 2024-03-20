@@ -12,16 +12,7 @@ module SageOne
     # @return [Faraday::Connection] configured with the headers SageOne expects
     #   and our required middleware stack. raw_response can be set to true to
     #   help with debugging.
-    def connection
-      options = {
-        headers:  { 'Accept'        => "application/json; charset=utf-8",
-                    'User-Agent'    => user_agent,
-                    'Content-Type'  => 'application/json' },
-        proxy:    proxy,
-        ssl:      { verify: false },
-        url:      api_endpoint
-      }
-
+    def connection(options = {})
       Faraday.new(options) do |conn|
         conn.request :json
 

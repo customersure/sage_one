@@ -4,22 +4,41 @@ require 'sage_one/version'
 module SageOne
   # Provide numerous configuration options that control core behaviour.
   module Configuration
-    VALID_OPTIONS_KEYS = [
-      :adapter,
-      :faraday_config_block,
-      :api_endpoint,
-      :proxy,
-      :access_token,
-      :client_id,
-      :client_secret,
-      :user_agent,
-      :request_host,
-      :auto_traversal,
-      :raw_response].freeze
+    VALID_OPTIONS_KEYS = %i[
+      adapter
+      faraday_config_block
+      api_endpoint
+      authorization_url_prefix
+      authorization_url_postfix
+      token_url_prefix
+      token_url_postfix
+      revoke_token_url_postfix
+      content_type
+      token_content_type
+      proxy
+      access_token
+      business_id
+      client_id
+      client_secret
+      user_agent
+      request_host
+      auto_traversal
+      raw_response
+    ].freeze
 
-    DEFAULT_ADAPTER        = Faraday.default_adapter
-    DEFAULT_API_ENDPOINT   = 'https://app.sageone.com/api/v1/'.freeze
-    DEFAULT_USER_AGENT     = "SageOne Ruby Gem #{SageOne::VERSION}".freeze
+    DEFAULT_ADAPTER                = Faraday.default_adapter
+    DEFAULT_API_ENDPOINT           = 'https://api.accounting.sage.com/v3.1'.freeze
+    DEFAULT_AUTHORIZATION_URL_PREFIX  = 'https://www.sageone.com'.freeze
+    DEFAULT_AUTHORIZATION_URL_POSTFIX = 'oauth2/auth/central'.freeze
+
+    DEFAULT_TOKEN_URL_PREFIX  = 'https://oauth.accounting.sage.com'.freeze
+    DEFAULT_TOKEN_URL_POSTFIX = 'token'.freeze
+    DEFAULT_REVOKE_TOKEN_URL_POSTFIX = 'revoke'.freeze
+
+    DEFAULT_CONTENT_TYPE       = 'application/json'.freeze
+    DEFAULT_TOKEN_CONTENT_TYPE = 'application/x-www-form-urlencoded'.freeze
+
+    DEFAULT_USER_AGENT         = "SageOne Ruby Gem #{SageOne::VERSION}".freeze
 
     # Only get the first page when making paginated data requests
     DEFAULT_AUTO_TRAVERSAL = false
@@ -67,15 +86,32 @@ module SageOne
     # Sets the options to the default values
     def reset
       self.adapter        = DEFAULT_ADAPTER
-      self.api_endpoint   = DEFAULT_API_ENDPOINT
       self.proxy          = nil
       self.access_token   = nil
       self.client_id      = nil
       self.client_secret  = nil
+      self.business_id    = nil
       self.request_host   = nil
       self.user_agent     = DEFAULT_USER_AGENT
       self.auto_traversal = DEFAULT_AUTO_TRAVERSAL
       self.raw_response   = DEFAULT_RAW_RESPONSE
+      self.api_endpoint   = DEFAULT_API_ENDPOINT
+
+      reset_authentication_urls
+      reset_content_types
+    end
+
+    def reset_authentication_urls
+      self.authorization_url_prefix  = DEFAULT_AUTHORIZATION_URL_PREFIX
+      self.authorization_url_postfix = DEFAULT_AUTHORIZATION_URL_POSTFIX
+      self.token_url_prefix          = DEFAULT_TOKEN_URL_PREFIX
+      self.token_url_postfix         = DEFAULT_TOKEN_URL_POSTFIX
+      self.revoke_token_url_postfix  = DEFAULT_REVOKE_TOKEN_URL_POSTFIX
+    end
+
+    def reset_content_types
+      self.content_type       = DEFAULT_CONTENT_TYPE
+      self.token_content_type = DEFAULT_TOKEN_CONTENT_TYPE
     end
   end
 end

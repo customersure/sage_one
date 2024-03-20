@@ -25,8 +25,9 @@ module SageOne
     private
 
     def request(method, path, options)
-      options = format_datelike_objects!(options) unless options.empty?
-      response = connection.send(method) do |request|
+      options = format_datelike_objects!(options) if options.present?
+      request_options = retrieve_request_options(api_endpoint, content_type)
+      response = connection(request_options).send(method) do |request|
         case method
         when :delete, :get
           options.merge!('$startIndex' => options.delete(:start_index)) if options[:start_index]
@@ -40,32 +41,53 @@ module SageOne
 
       if raw_response
         response
-      elsif auto_traversal && ( next_url = links(response)["next"] )
-        response.body + request(method, next_url, options)
+      elsif auto_traversal
+        next_link = next_link(response)
+
+        if next_link.present?
+          recursive_response_body = request(method, next_link, options)
+          # TODO: Modify response.body other details too.
+          response.body['$items'] = response.body['$items'] + recursive_response_body['$items']
+        end
+
+        response.body
       else
         response.body
       end
     end
 
-    def links(response)
-      links = ( response.headers["X-SData-Pagination-Links"] || "" ).split(', ').map do |link|
-        url, type = link.match(/<(.*?)>; rel="(\w+)"/).captures
-        [ type, url ]
-      end
-
-      Hash[ *links.flatten ]
+    def retrieve_request_options(endpoint, content_type)
+      {
+        headers:  { 'Accept'        => "application/json; charset=utf-8",
+                    'User-Agent'    => user_agent,
+                    'Content-Type'  => content_type,
+                    'X-Business'    => business_id },
+        proxy:    proxy,
+        ssl:      { verify: false },
+        url:      endpoint
+      }
     end
 
+    def next_link(response)
+      # response.body of destory request can be blank.
+      return '' if response.body.blank?
+
+      (response.body["$next"] || "").match(/(?<=\/).*items_per_page=[0-9]+/).to_s
+    end
+
+    # It Converts "ruby date objects" into correctly formatted "date strings".
+    # It modifies given hash directly, without creating a separate copy.
     def format_datelike_objects!(options)
-      new_opts = {}
-      options.map do |k,v|
-        if v.respond_to?(:map)
-          new_opts[k] = format_datelike_objects!(v)
-        else
-          new_opts[k] = v.respond_to?(:strftime) ? v.strftime("%d/%m/%Y") : v
+      options.each do |key, value|
+        case value
+        when Date
+          options[key] = value.strftime('%d/%m/%Y')
+        when Array
+          value.each { |item| format_datelike_objects!(item) if item.is_a?(Hash) }
+        when Hash
+          format_datelike_objects!(value)
         end
       end
-      new_opts
     end
 
   end
